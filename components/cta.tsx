@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Button } from "@/components/moving-border";
+import Link from "next/link";
 
 export default function CTA() {
   return (
@@ -26,25 +27,21 @@ export default function CTA() {
 
             <h2 className="mx-auto mt-5 max-w-3xl text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
               Your documents have
-              <span className="block text-neutral-500">
-                more to say.
-              </span>
+              <span className="block text-neutral-500">more to say.</span>
             </h2>
 
             <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-neutral-400 md:text-lg">
-              Stop searching through documents manually.
-              Ask questions and let your knowledge base find
-              the answers.
+              Stop searching through documents manually. Ask questions and let
+              your knowledge base find the answers.
             </p>
 
             <div className="mt-10 flex justify-center">
-              <Button
-                containerClassName="h-14 w-48"
-                className="gap-2"
-              >
-                Start Chatting
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <Link href="/chat">
+                <Button containerClassName="h-14 w-48" className="gap-2">
+                  Start Chatting
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>

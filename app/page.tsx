@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/navbar";
 import { Button } from "@/components/moving-border";
 import { Spotlight } from "@/components/spotlight";
@@ -6,6 +5,7 @@ import Features from "@/components/features";
 import HowItWorks from "@/components/how-it-works";
 import CTA from "@/components/cta";
 import Footer from "@/components/footer";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -33,19 +33,24 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex gap-4">
-          <Button>Start Chatting</Button>
+          <Link href="/chat" className="cursor-pointer">
+            <Button>Start Chatting</Button>
+          </Link>
 
-          <button className="rounded-lg border border-neutral-700 px-6 py-3 font-medium text-white transition hover:bg-neutral-900">
+          <Link
+            href="/chat"
+            className="rounded-lg border border-neutral-700 px-6 py-3 font-medium text-white transition hover:bg-neutral-900"
+          >
             Upload Documents
-          </button>
+          </Link>
         </div>
       </section>
 
       {/* FEATURES SECTION */}
       <Features />
-      <HowItWorks/>
-      <CTA/>
-      <Footer/>
+      <HowItWorks />
+      <CTA />
+      <Footer />
     </main>
   );
 }
