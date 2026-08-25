@@ -1,8 +1,11 @@
+
 import Navbar from "@/components/navbar";
 import { Button } from "@/components/moving-border";
 import { Spotlight } from "@/components/spotlight";
 import Features from "@/components/features";
 import HowItWorks from "@/components/how-it-works";
+import CTA from "@/components/cta";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -41,6 +44,8 @@ export default function Home() {
       {/* FEATURES SECTION */}
       <Features />
       <HowItWorks/>
+      <CTA/>
+      <Footer/>
     </main>
   );
 }
