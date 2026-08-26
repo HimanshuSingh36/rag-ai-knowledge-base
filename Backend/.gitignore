@@ -1,0 +1,19 @@
+# Python virtual environment
+project/
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+.mypy_cache/
