@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r Backend/requirements.txt
 
       - name: Check Python syntax
-        run: python -m compileall .
+        run: python -m compileall Backend
