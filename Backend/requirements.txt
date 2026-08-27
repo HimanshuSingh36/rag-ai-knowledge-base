@@ -11,3 +11,4 @@ openai
 requests
 bs4
 tavily
+pypdf

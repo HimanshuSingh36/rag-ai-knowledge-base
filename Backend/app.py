@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import os
+from routes.documents import documens_bp
 
 port = int(os.environ.get("PORT", 5002))
 
@@ -13,6 +14,7 @@ CORS(app)
 
 
 app.register_blueprint(chat_bp)
+app.register_blueprint(documens_bp)
 
 
 @app.get("/api/health")

@@ -1,81 +1,11 @@
-# import requests
-# import os, subprocess
-# from tavily import TavilyClient
-# from logger import logger
-# from bs4 import BeautifulSoup
 
-
-# tavily_client = TavilyClient(api_key=os.getenv("tavily_api_key"))
-
-
-# def web_search(query : str) -> str :
-#     try:
-#         response=tavily_client.search(query, search_depth="advanced")
-        
-#         obtained_url=""
-#         for r in response["results"]:
-#             obtained_url=r["url"]
-#         # print("Obtained url is ", obtained_url)
-#         url_response=read_url(obtained_url)
-#         print("here it is1\n\n\n\n",url_response)
-#         soup = BeautifulSoup(url_response.text, 'html.parser')
-#         print("here it is\n\n\n\n",soup.prettify())
-#         # print("Url response is :", url_response)
-#     except Exception as e:
-#         logger.error(f"Web search for '{query}' failed: {e}")
-#         return f"Web search for '{query}' failed: {e}"
-    
-#     if not response.get("results"):
-#         return f"No results found for '{query}'."
-    
-#     formatted=[]
-#     for r in response["results"]:
-#         formatted.append(
-#             f"{r['title']}\n{r['content']}\nRefer to this for full content: {r['url']}"
-#         )
-#     return "\n\n".join(formatted)
-
-
-# def read_url(url : str):
-#     try:
-#         response=requests.get(url)
-#         # print(response.text)
-#         # obtained_url=response["c"]
-#         return response
-#     except Exception as e:
-#         logger.error(f"Error while retrieving data from url : {url} \n Error is {e}")
-
-# def get_weather(city: str)->str:
-
-#     url = f"https://wttr.in/{city.lower()}?format=%C+%t"
-#     try:
-#         response = requests.get(url, timeout=10)
-#         response.raise_for_status()
-#         return f"The weather of {city} is {response.text.strip()}"
-#     except requests.exceptions.Timeout:
-#         logger.error(f"Weather lookup for {city} timed out.")
-#         return f"Weather lookup for {city} timed out."
-#     except requests.exceptions.RequestException as e:
-#         logger.error(f"Weather lookup for {city} failed: {e}")
-#         return f"Weather lookup for {city} failed: {e}"
-
-# def run_command(cmd : str):
-#     try:
-#         result=subprocess.run(cmd,shell=True)
-#         return result
-#     except Exception as e:
-#         logger.error(f"Error occured while executing command : {cmd} got error : {e}")
-#         return f"Error occured while executing command : {cmd} got error : {e}"
-
-# available_tools = {"get_weather": get_weather,"run_command":run_command,"web_search":web_search}
-# AVAILABLE_TOOL_NAMES = list(available_tools.keys())
 import os
 import subprocess
 import requests
 
 from bs4 import BeautifulSoup
 from tavily import TavilyClient
-
+from retriever import search_documents
 from logger import logger
 
 
@@ -534,6 +464,7 @@ def run_command(cmd: str) -> str:
 # ============================================================
 
 available_tools = {
+    "search_documents": search_documents,
     "web_search": web_search,
     "read_url": read_url,
     "get_weather": get_weather,

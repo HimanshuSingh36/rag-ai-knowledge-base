@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUp, Paperclip } from "lucide-react";
 import ChatMessage from "./chat-message";
 
 export default function ChatWindow() {
+  console.log("🔥 CHAT WINDOW RENDERED");
   type Message = {
     id: string;
     role: "user" | "assistant";
@@ -13,6 +14,8 @@ export default function ChatWindow() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [documentId, setDocumentId] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const typeAssistantMessage = (content: string, messageId: string) => {
     let index = 0;
@@ -46,6 +49,70 @@ export default function ChatWindow() {
       }
     }, 15);
   };
+
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("clicked");
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      alert("Only PDF files are currently supported.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+
+      formData.append("file", file);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/documents`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Upload failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log("Document uploaded:", data);
+
+      setDocumentId(data.document_id);
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content: `${file.name} uploaded successfully. You can now ask questions about this document.`,
+        },
+      ]);
+    } catch (error) {
+      console.error("Document upload failed:", error);
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content:
+            error instanceof Error
+              ? `Upload failed: ${error.message}`
+              : "Document upload failed.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSend = async () => {
     const message = input.trim();
 
@@ -74,6 +141,7 @@ export default function ChatWindow() {
           },
           body: JSON.stringify({
             message,
+            document_id: documentId,
           }),
         },
       );
@@ -165,12 +233,13 @@ export default function ChatWindow() {
               <div className="flex items-end gap-2">
                 <button
                   type="button"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition hover:bg-white/[0.05] hover:text-white"
-                  aria-label="Attach document"
+                  onClick={() => {
+                    console.log("🔥 PAPERCLIP CLICKED");
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500 text-white"
                 >
                   <Paperclip className="h-4 w-4" />
                 </button>
-
                 <textarea
                   rows={1}
                   value={input}

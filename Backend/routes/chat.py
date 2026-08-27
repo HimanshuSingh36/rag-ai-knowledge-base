@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify
 
 from main import run_query
 
-
 chat_bp = Blueprint("chat", __name__)
 
 
@@ -12,27 +11,19 @@ def chat():
     data = request.get_json()
 
     if not data:
-        return jsonify({
-            "error": "Request body is required"
-        }), 400
+        return jsonify({"error": "Request body is required"}), 400
 
     message = data.get("message", "").strip()
-
+    document_id = data.get("document_id")
     if not message:
-        return jsonify({
-            "error": "Message is required"
-        }), 400
+        return jsonify({"error": "Message is required"}), 400
 
     try:
 
-        response = run_query(message)
+        response = run_query(message, document_id=document_id)
 
-        return jsonify({
-            "response": response
-        })
+        return jsonify({"response": response})
 
     except Exception as e:
 
-        return jsonify({
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
