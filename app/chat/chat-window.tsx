@@ -63,6 +63,8 @@ export default function ChatWindow() {
     setIsLoading(true);
 
     try {
+      console.log("API URL:", `${process.env.NEXT_PUBLIC_API_URL}/api/chat`);
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/chat`,
         {
@@ -87,27 +89,17 @@ export default function ChatWindow() {
       console.error("Chat request failed:", error);
 
       const errorMessage: Message = {
-} catch (error) {
-  console.error("Chat request failed:", error);
-
-  const errorMessage: Message = {
-    id: crypto.randomUUID(),
-    role: "assistant",
-    content:
-      error instanceof Error
-        ? `Request failed: ${error.message}`
-        : "Request failed. Please try again.",
-  };
-
-  setMessages((currentMessages) => [...currentMessages, errorMessage]);
-  setIsLoading(false);
-}        id: crypto.randomUUID(),
+        id: crypto.randomUUID(),
         role: "assistant",
         content:
-          "Sorry, I couldn't connect to the AI backend. Please try again.",
+          error instanceof Error
+            ? `Request failed: ${error.message}`
+            : "Request failed. Please try again.",
       };
 
       setMessages((currentMessages) => [...currentMessages, errorMessage]);
+
+      setIsLoading(false);
     }
   };
 
