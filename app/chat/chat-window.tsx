@@ -5,7 +5,6 @@ import { ArrowUp, Paperclip } from "lucide-react";
 import ChatMessage from "./chat-message";
 
 export default function ChatWindow() {
-  console.log("🔥 CHAT WINDOW RENDERED");
   type Message = {
     id: string;
     role: "user" | "assistant";
@@ -14,7 +13,6 @@ export default function ChatWindow() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [documentId, setDocumentId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const typeAssistantMessage = (content: string, messageId: string) => {
@@ -51,7 +49,6 @@ export default function ChatWindow() {
   };
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("clicked");
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -231,15 +228,20 @@ export default function ChatWindow() {
           <div className="mx-auto max-w-3xl">
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2 transition focus-within:border-white/20">
               <div className="flex items-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("🔥 PAPERCLIP CLICKED");
-                  }}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500 text-white"
+                <label
+                  className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl text-neutral-500 transition hover:bg-white/[0.05] hover:text-white"
+                  aria-label="Attach document"
                 >
                   <Paperclip className="h-4 w-4" />
-                </button>
+
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    className="hidden"
+                    onChange={handleUpload}
+                  />
+                </label>
+
                 <textarea
                   rows={1}
                   value={input}
